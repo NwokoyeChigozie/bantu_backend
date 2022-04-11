@@ -1,20 +1,17 @@
 package model
 
-import (	
+import (
 	"time"
 )
 
 type Footprint struct {
-
-	CurrentTime     time.Time 	
-    IPAddress		string 		
-    DeviceInfo      string		
-	BrowserType     string		
-	Location       struct {
-		Longitude uint `json:"longitude"`
-		Latitude uint `json:"latitude"`
-		City    string `json:"city"`
-		Country string `json:"country"`
-	}
+	ID          uint
+	CurrentTime time.Time `gorm:"column:current_time;not null" json:"current_time"`
+	IPAddress   string    `gorm:"column:ip_address; type:text" json:"ip_address"`
+	DeviceInfo  string    `gorm:"column:device_info; type:text" json:"device_info"`
+	BrowserType string    `gorm:"column:browser_type; type:text" json:"browser_type"`
+	Longitude   uint      `gorm:"column:longitude;type:uint" json:"longitude"`
+	Latitude    uint      `gorm:"column:latitude;type:uint" json:"latitude"`
+	City        string    `gorm:"column:city;type:text" json:"city"`
+	Country     string    `gorm:"column:country;type:text" json:"country"`
 }
-

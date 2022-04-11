@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/spf13/viper"
 )
@@ -13,13 +12,10 @@ type DatabaseConfiguration struct {
 	Password string
 	Host     string
 	Port     string
-	LogMode  bool
 }
 
 type ServerConfiguration struct {
-	Port                      string
-	Secret                    string
-	AccessTokenExpireDuration int
+	Port string
 }
 
 type Configuration struct {
@@ -29,9 +25,8 @@ type Configuration struct {
 
 // Setup initialize configuration
 var (
-	Config   *Configuration
+	Config *Configuration
 )
-
 
 func Setup() {
 	var configuration *Configuration
@@ -41,18 +36,21 @@ func Setup() {
 	viper.AddConfigPath(".")
 	viper.ReadInConfig()
 
-	fmt.Println(viper.Get("DB_PORT"))
-
-	// if err := viper.ReadInConfig(); err != nil {
-	// 	log.Fatalf("Error reading config file, %s", err)
-	// }
-
-	err := viper.Unmarshal(&configuration)
-	if err != nil {
-		log.Fatalf("Unable to decode into struct, %v", err)
+	dbConfig := DatabaseConfiguration{
+		Dbname:   fmt.Sprintf("%v", viper.Get("DB_DATABASE")),
+		Username: fmt.Sprintf("%v", viper.Get("DB_USERNAME")),
+		Password: fmt.Sprintf("%v", viper.Get("DB_PASSWORD")),
+		Host:     fmt.Sprintf("%v", viper.Get("DB_HOST")),
+		Port:     fmt.Sprintf("%v", viper.Get("DB_PORT")),
+	}
+	serverConfig := ServerConfiguration{
+		Port: fmt.Sprintf("%v", viper.Get("SERVER_PORT")),
+	}
+	configuration = &Configuration{
+		Server:   serverConfig,
+		Database: dbConfig,
 	}
 
-	// Params = configuration.Params
 	Config = configuration
 }
 
