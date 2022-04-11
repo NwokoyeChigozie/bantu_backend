@@ -1,10 +1,10 @@
-package router
+package connection
 
 import (
 	"fmt"
 
-	"github.com/UfiairENE/bantu_solution/model"
 	"github.com/UfiairENE/bantu_solution/internal/config"
+	"github.com/UfiairENE/bantu_solution/internal/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -34,4 +34,3 @@ func MigrationModels() []interface{} {
 		model.Footprint{},
 	}
 }
-

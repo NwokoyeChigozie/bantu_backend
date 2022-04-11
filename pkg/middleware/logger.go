@@ -53,7 +53,6 @@ func Logger() gin.HandlerFunc {
 			"client_ip":    clientIP,
 			"req_method":   reqMethod,
 			"req_uri":      reqUri,
-
 		}).Info()
 	}
 }
