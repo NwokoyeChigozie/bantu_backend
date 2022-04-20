@@ -30,8 +30,8 @@ func Setup(validate *validator.Validate) *gin.Engine {
 		IpAddress   string `json:"ip_address" validate:"required"`
 		DeviceInfo  string `json:"device_info" validate:"required"`
 		BrowserType string `json:"browser_type" validate:"required"`
-		Longitude   uint   `json:"longitude" validate:"required"`
-		Latitude    uint   `json:"latitude" validate:"required"`
+		Longitude   string `json:"longitude" validate:"required"`
+		Latitude    string `json:"latitude" validate:"required"`
 		City        string `json:"city" validate:"required"`
 		Country     string `json:"country" validate:"required"`
 	}
@@ -50,7 +50,7 @@ func Setup(validate *validator.Validate) *gin.Engine {
 			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
-		
+
 		fmt.Println(1)
 		print := model.Footprint{
 			CurrentTime: time.Now(),
@@ -62,7 +62,7 @@ func Setup(validate *validator.Validate) *gin.Engine {
 			City:        req.City,
 			Country:     req.Country,
 		}
-		
+
 		tx := db.Create(&print)
 		if tx.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": tx.Error.Error()})
@@ -72,18 +72,17 @@ func Setup(validate *validator.Validate) *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"message": "successfuly added to database", "data": print})
 	})
 
-	r.GET("/viewfootprint", func (c *gin.Context) {
+	r.GET("/viewfootprint", func(c *gin.Context) {
 		db := connection.Connection()
 		var footprints []model.Footprint
-		result :=db.Find(&footprints)
-		if result.Error !=nil{
-			c.JSON(http.StatusInternalServerError,gin.H{"message":result.Error.Error()})
-			return 
+		result := db.Find(&footprints)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": result.Error.Error()})
+			return
 		}
 		c.JSON(http.StatusOK, gin.H{"message": "view footprint", "data": footprints})
 
 	})
-		
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
