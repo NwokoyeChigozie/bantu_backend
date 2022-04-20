@@ -24,8 +24,8 @@ func main() {
 	validatorRef := validator.New()
 	r := router.Setup(validatorRef)
 
-	log.Printf("Server is starting at 127.0.0.1:%s", 5000)
-	log.Fatal(r.Run(":5000"))
+	log.Printf("Server is starting at 127.0.0.1:%s", getConfig.Server.Port)
+	log.Fatal(r.Run(":" + getConfig.Server.Port))
 
 	fmt.Println(getConfig.Server.Port)
 
